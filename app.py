@@ -14,10 +14,9 @@ from tld.exceptions import TldDomainNotFound, TldBadUrl, TldIOError
 import hashlib
 import whois
 import warnings
+import validators
 
-
-
-    
+   
 def get_url_length(url):
     return len(url)
 
@@ -95,6 +94,7 @@ def get_has_shortening_service(url):
                          r'tr\.im|link\.zip\.net')
     match = pattern.search(url)
     return int(bool(match))
+
 def get_abnormal_url(url):
     parsed_url = urlparse(url)
     hostname = parsed_url.hostname
@@ -102,14 +102,18 @@ def get_abnormal_url(url):
         hostname = str(hostname)
         match = re.search(hostname, url)
         if match:
+            return 0
+        else: 
             return 1
     return 0
+
 def get_secure_http(url):
     scheme = urlparse(url).scheme
     if scheme == 'https':
         return 1
     else:
         return 0
+    
 def get_have_ip_address(url):
     pattern = r'(([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.' \
               r'([01]?\d\d?|2[0-4]\d|25[0-5])\/)|' \
@@ -133,8 +137,8 @@ def get_google_index(url):
 
 
 model = joblib.load('classifier5_model.joblib')
-st.title('Is the URL a malware')
-url= st.text_input("Enter the url")
+st.title('Is the URL Malicious')
+
 
 def get_url(url):
     url = url.replace('www.', '')
@@ -164,12 +168,22 @@ def get_url(url):
 
 
 def model1_predict(url):
-    numerical_values = get_url(url)
-    prediction_int = model.predict(np.array(list(numerical_values.values())).reshape(1, -1))[0]
-    if prediction_int == 0:
-        st.success('URL is not a malware')
+    if url != "":
+        if validators.url(url):
+            numerical_values = get_url(url)
+            prediction_int = model.predict(np.array(list(numerical_values.values())).reshape(1, -1))[0]
+            if prediction_int == 0:
+                st.success('URL is not malicious')
+            else: 
+                st.error('URl is a malicious') 
+        else: 
+            st.error('Not a valid URL !')
     else: 
-        st.error('URl is a malware') 
-    
-
-trigger = st.button('Predict', on_click=model1_predict(url))
+        st.error('Please enter URL !')
+     
+with st.form("my_form"):
+    url= st.text_input(label="Enter the URL", placeholder="http://example.com")
+    submitted = st.form_submit_button("Predict")
+    if submitted:
+       model1_predict(url)
+#trigger = st.button('Predict', on_click=model1_predict(url))
