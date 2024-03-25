@@ -136,7 +136,7 @@ def get_google_index(url):
 
 
 
-model = joblib.load('classifier5_model.joblib')
+model = joblib.load('classifier_model.joblib')
 st.title('Is the URL Malicious')
 
 
@@ -182,7 +182,7 @@ def model1_predict(url):
         st.error('Please enter URL !')
      
 with st.form("my_form"):
-    url= st.text_input(label="Enter the URL", placeholder="http://example.com")
+    url= st.text_input(label="Enter the URL", placeholder="www.example.com")
     submitted = st.form_submit_button("Predict")
     if submitted:
        model1_predict(url)
