@@ -136,7 +136,7 @@ def get_google_index(url):
 
 
 
-model = joblib.load('classifier_model.joblib')
+model = joblib.load('classifier1_model.joblib')
 st.title('Is the URL Malicious')
 
 
@@ -169,15 +169,15 @@ def get_url(url):
 
 def model1_predict(url):
     if url != "":
-        if validators.url(url):
+        #if validators.url(url):
             numerical_values = get_url(url)
             prediction_int = model.predict(np.array(list(numerical_values.values())).reshape(1, -1))[0]
             if prediction_int == 0:
                 st.success('URL is not malicious')
             else: 
                 st.error('URl is a malicious') 
-        else: 
-            st.error('Not a valid URL !')
+        #else: 
+            #st.error('Not a valid URL !')
     else: 
         st.error('Please enter URL !')
      
