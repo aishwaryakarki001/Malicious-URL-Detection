@@ -139,7 +139,7 @@ def get_google_index(url):
 
 
 # Loading the machine learning model
-model = joblib.load('classifier5_model.joblib')
+model = joblib.load('./Models/classifier5_model.joblib')
 
 # Setting the title of the Streamlit app
 st.title('Is the URL Malicious')
