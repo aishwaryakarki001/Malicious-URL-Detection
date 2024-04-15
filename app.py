@@ -6,10 +6,14 @@ from urllib.parse import urlparse
 import re
 from googlesearch import search
 from tldextract import extract as tld_extract
-from tld import get_tld
+from tld import get_tld, is_tld
+from tld.exceptions import TldDomainNotFound, TldBadUrl, TldIOError
+import hashlib
+import whois
+import warnings
+import validators
 
-
-# Function to get the length of the URL
+   
 def get_url_length(url):
     return len(url)
 
@@ -162,33 +166,17 @@ def get_url(url):
     
     return {
         'url_len': url_len,
-        'abnormal_url': abnormal,
-        'use_of_ip_address': have_ip,
-        'sum_count_special_chars': special_chars_count,
-        'https': secure_https,
-        'digits': digits_count,
-        'letters': letters_count,
-        'Shortining_Service': shortened,
-        'google_index' : index_google,
-        'domain_length' : domain_length
+        'letters_count': letters_count,
+        'digits_count': digits_count,
+        'special_chars_count': special_chars_count,
+        'shortened': shortened,
+        'abnormal': abnormal,
+        'secure_http': secure_https,
+        'have_ip': have_ip,
+        'GoogleIndex' : index_google
     }
 
-# Function to display the results based on the features extracted
-def result(numerical_values):
-    st.write('Due to following reasons:')
-    st.write('URL Length: '  + str(numerical_values['url_len']))
-    st.write('Abnormal URL: ' + str(numerical_values['abnormal_url']))
-    st.write('Use of IP: ' + str(numerical_values['use_of_ip_address']))
-    st.write('Special Characters: ' + str(numerical_values['sum_count_special_chars']))
-    st.write('URL With https: '  + str(numerical_values['https']))
-    st.write('Use of Digits: ' + str(numerical_values['digits']))
-    st.write('Letters count: '  + str(numerical_values['letters']))
-    st.write('Shortening URL service: ' + str(numerical_values['Shortining_Service']))
-    st.write('Google Index: ' + str(numerical_values['google_index']))
-    st.write('Domain Length: '  + str(numerical_values['domain_length']))
-    return
 
-# Function to predict whether the URL is malicious or not
 def model1_predict(url):
     if url != "":
         #if validators.url(url):
