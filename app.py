@@ -14,7 +14,7 @@ from tld.exceptions import TldDomainNotFound, TldBadUrl, TldIOError
 import hashlib
 import whois
 import warnings
-import validators
+#import validators
 
    
 def get_url_length(url):
@@ -156,14 +156,15 @@ def get_url(url):
     
     return {
         'url_len': url_len,
-        'letters_count': letters_count,
-        'digits_count': digits_count,
-        'special_chars_count': special_chars_count,
-        'shortened': shortened,
-        'abnormal': abnormal,
-        'secure_http': secure_https,
-        'have_ip': have_ip,
-        'GoogleIndex' : index_google
+        'abnormal_url': abnormal,
+        'use_of_ip_address': have_ip,
+        'sum_count_special_chars': special_chars_count,
+        'https': secure_https,
+        'Shortining_Service': shortened,
+        'google_index' : index_google,
+        'digits': digits_count,
+        'letters': letters_count,
+        
     }
 
 
